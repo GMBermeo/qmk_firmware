@@ -45,9 +45,8 @@ void eeconfig_init_quantum(void) {
     eeprom_update_byte(EECONFIG_DEBUG, 0);
     eeprom_update_byte(EECONFIG_DEFAULT_LAYER, 0);
     default_layer_state = 0;
-    eeprom_update_byte(EECONFIG_KEYMAP_LOWER_BYTE, 0);
-    eeprom_update_byte(EECONFIG_KEYMAP_UPPER_BYTE, 0x4);
-    eeprom_update_byte(EECONFIG_MOUSEKEY_ACCEL, 0);
+    // Enable oneshot and autocorrect by default: 0b0001 0100 0000 0000
+    eeprom_update_word(EECONFIG_KEYMAP, 0x1400);
     eeprom_update_byte(EECONFIG_BACKLIGHT, 0);
     eeprom_update_byte(EECONFIG_AUDIO, 0xFF); // On by default
     eeprom_update_dword(EECONFIG_RGBLIGHT, 0);
@@ -56,16 +55,6 @@ void eeconfig_init_quantum(void) {
     eeprom_update_byte(EECONFIG_VELOCIKEY, 0);
     eeprom_update_dword(EECONFIG_RGB_MATRIX, 0);
     eeprom_update_word(EECONFIG_RGB_MATRIX_EXTENDED, 0);
-
-    // TODO: Remove once ARM has a way to configure EECONFIG_HANDEDNESS
-    //        within the emulated eeprom via dfu-util or another tool
-#if defined INIT_EE_HANDS_LEFT
-#    pragma message "Faking EE_HANDS for left hand"
-    eeprom_update_byte(EECONFIG_HANDEDNESS, 1);
-#elif defined INIT_EE_HANDS_RIGHT
-#    pragma message "Faking EE_HANDS for right hand"
-    eeprom_update_byte(EECONFIG_HANDEDNESS, 0);
-#endif
 
 #if defined(HAPTIC_ENABLE)
     haptic_reset();
@@ -176,15 +165,14 @@ void eeconfig_update_default_layer(uint8_t val) {
  * FIXME: needs doc
  */
 uint16_t eeconfig_read_keymap(void) {
-    return (eeprom_read_byte(EECONFIG_KEYMAP_LOWER_BYTE) | (eeprom_read_byte(EECONFIG_KEYMAP_UPPER_BYTE) << 8));
+    return eeprom_read_word(EECONFIG_KEYMAP);
 }
 /** \brief eeconfig update keymap
  *
  * FIXME: needs doc
  */
 void eeconfig_update_keymap(uint16_t val) {
-    eeprom_update_byte(EECONFIG_KEYMAP_LOWER_BYTE, val & 0xFF);
-    eeprom_update_byte(EECONFIG_KEYMAP_UPPER_BYTE, (val >> 8) & 0xFF);
+    eeprom_update_word(EECONFIG_KEYMAP, val);
 }
 
 /** \brief eeconfig read audio
