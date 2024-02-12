@@ -8,10 +8,10 @@
 // The underscores don't mean anything - you can have a layer called STUFF or any other name.
 // Layer names don't all need to be of the same length, obviously, and you can also skip them
 // entirely and just use numbers.
-enum layers { 
-    _QWERTY, 
-    _LOWER, 
-    _RAISE, 
+enum layers {
+    _QWERTY,
+    _LOWER,
+    _RAISE,
     _NUMP,
 };
 
@@ -30,8 +30,8 @@ enum custom_keycodes {
     CEDILHA,            // ç direct key
     AO,                 // ã direct key
     ASPAS,              // " direct key
-
 };
+
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
     LCTL_T(KC_F3), KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_GRAVE,
@@ -40,7 +40,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     LSFT_T(KC_LEFT), KC_Z, KC_X,    KC_C,    KC_V,    KC_B,                         KC_N,    KC_M,   KC_COMM, KC_DOT, KC_SLSH, RGUI_T(KC_RIGHT),
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
-                                      LGUI_T(KC_DOWN), MO(1), KC_SPC,    KC_BSPC,  MO(2),  RSFT_T(KC_UP)
+                                            KC_LGUI, MO(1), KC_SPC,    KC_BSPC,  MO(2),  KC_LSFT
     //                                    `--------------------------'  `--------------------------'
     ),
 
@@ -81,9 +81,10 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT
     )};
 
 //Per key lights
-void rgb_matrix_indicators_user(void) {
-#ifdef RGB_MATRIX_ENABLE
-    switch (get_highest_layer(layer_state)) {
+ #ifdef RGB_MATRIX_ENABLE
+ #    define DRIVER_LED_TOTAL 54
+bool rgb_matrix_indicators_user(void) {
+    switch (get_highest_layer(layer_state))  {
         case _QWERTY:
             isSneaking = false;
             mod_state  = get_mods();
@@ -179,7 +180,7 @@ void rgb_matrix_indicators_user(void) {
                     case 15:                                    // C key off
                     case 20:                                    // X key off
                     case 21:                                    // Z key off
-                    
+
                     case 26:                                    // shift key off
                     case 52 ... 53:                             // right column off
                         rgb_matrix_set_color(i, 0, 0, 0);       // off
@@ -256,6 +257,7 @@ void rgb_matrix_indicators_user(void) {
                 rgb_matrix_set_color(14, 0, 255, 0);            // Green layer active
             }
     }
+    return true;
 };
 #endif
 

@@ -82,7 +82,6 @@ For convenience, QMK includes some Mod-Tap shortcuts to make common combinations
 | LSFT_T(&larr;)  | Z | X | C | V | B ||| N | M | , | . | / | RGUI_T(&rarr;)  |
 |||||  LGUI_T(&darr;) | MO(1) | SPACE |  ⌫ | MO(2)| RSFT_T( &uarr;)       |||||
 
-
 ### LOWER 🔵
 
 |||||||||||||||
@@ -96,9 +95,9 @@ For convenience, QMK includes some Mod-Tap shortcuts to make common combinations
 
 |||||||||||||||
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|--:|
-LCTL_T(F4[^7]) |  ! | @ | # | $ | % |||  ˆ | & | *      | (     | ) |     ˜    |
-LALT_T(TAB) | Ã[^8] |   |   |   |   |||  { | } | &#124; | "[^9] | : |     ↵    |
-LALT(&larr;) |  |   | Ç[^10] |   |   ||| _ | + | <      | >     | ? | LALT(&rarr;) |
+|LCTL_T(F4[^7]) |  ! | @ | # | $ | % |||  ˆ | & | *      | (     | ) |     ˜    |
+|LALT_T(TAB) | Ã[^8] |   |   |   |   |||  { | } | &#124; | "[^9] | : |     ↵    |
+|LALT(&larr;) |  |   | Ç[^10] |   |   ||| _ | + | <      | >     | ? | LALT(&rarr;)|
 |||||  LGUI_T(END) | TG(3) | SPACE| DEL| _ | RSFT_T(HOME)                      |||||
 
 ### NUMPAD 🟢

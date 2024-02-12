@@ -35,18 +35,16 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 // #define PERMISSIVE_HOLD
 
 #ifdef RGBLIGHT_ENABLE
-#    undef RGBLED_NUM
-#    define RGBLED_NUM 27
 #define RGBLIGHT_EFFECT_BREATHING
 #define RGBLIGHT_EFFECT_RAINBOW_MOOD
-#define RGBLIGHT_EFFECT_RAINBOW_SWIRL
+// #define RGBLIGHT_EFFECT_RAINBOW_SWIRL
 #define RGBLIGHT_EFFECT_SNAKE
 #define RGBLIGHT_EFFECT_KNIGHT
 #define RGBLIGHT_EFFECT_CHRISTMAS
 #define RGBLIGHT_EFFECT_STATIC_GRADIENT
 #define RGBLIGHT_EFFECT_RGB_TEST
 #define RGBLIGHT_EFFECT_ALTERNATING
-#define RGBLIGHT_EFFECT_TWINKLE
+// #define RGBLIGHT_EFFECT_TWINKLE
 #    define RGBLIGHT_SLEEP
 #    define RGBLIGHT_SPLIT
 #    define RGBLIGHT_LIMIT_VAL 120
@@ -57,19 +55,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    define RGBLIGHT_TIMEOUT 75000
 #endif
 
-#ifdef OLED_ENABLE
+#    define OLED_FONT_H "keyboards/crkbd/lib/glcdfont.c"
 #    define SPLIT_LAYER_STATE_ENABLE
 #    define SPLIT_LED_STATE_ENABLE
 #    define SPLIT_MODS_ENABLE
 #    define SPLIT_WPM_ENABLE
 #    define SPLIT_OLED_ENABLE
-#    define OLED_FONT_H "keyboards/crkbd/keymaps/soundmonster/glcdfont.c"
 #    define OLED_DISABLE_TIMEOUT
 #    define OLED_TIMEOUT 150000
 #    define OLED_BRIGHTNESS 255
 #    define OLED_FADE_OUT
 #    define OLED_FADE_OUT_INTERVAL 15
-#endif
+#    define NO_ACTION_ONESHOT
 
 #ifdef RGB_MATRIX_ENABLE
 #    define RGB_MATRIX_KEYPRESSES // reacts to keypresses
@@ -109,7 +106,7 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #    undef ENABLE_RGB_MATRIX_RAINBOW_PINWHEELS
 #    undef ENABLE_RGB_MATRIX_RAINDROPS
 #    undef ENABLE_RGB_MATRIX_JELLYBEAN_RAINDROPS
-#    define ENABLE_RGB_MATRIX_TYPING_HEATMAP
+#    undef ENABLE_RGB_MATRIX_TYPING_HEATMAP
 #    define ENABLE_RGB_MATRIX_DIGITAL_RAIN
 #    undef ENABLE_RGB_MATRIX_SOLID_REACTIVE
 #    undef ENABLE_RGB_MATRIX_SOLID_REACTIVE_SIMPLE

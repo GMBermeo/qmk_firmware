@@ -1,0 +1,11 @@
+LTO_ENABLE         = yes
+
+
+#Dont use
+CONSOLE_ENABLE     = no
+MOUSEKEY_ENABLE    = no
+BOOTMAGIC_ENABLE   = no
+COMBO_ENABLE	   = no
+AUDIO_ENABLE	   = no
+MIDI_ENABLE		   = no
+BLUETOOTH_ENABLE   = no
