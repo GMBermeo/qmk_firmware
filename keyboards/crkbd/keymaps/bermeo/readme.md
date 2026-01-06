@@ -77,7 +77,7 @@ For convenience, QMK includes some Mod-Tap shortcuts to make common combinations
 
 |||||||||||||||
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|--:|
-| LCTL_T(F3[^2])  | Q | W | E | R | T ||| Y | U | I | O | P |      GRAVE      |
+| MISSION_CTL[^2] | Q | W | E | R | T ||| Y | U | I | O | P |      GRAVE      |
 | LALT_T(TAB)     | A | S | D | F | G ||| H | J | K | L | ; |        ↵        |
 | LSFT_T(&larr;)  | Z | X | C | V | B ||| N | M | , | . | / | RGUI_T(&rarr;)  |
 |||||  LGUI_T(&darr;) | MO(1) | SPACE |  ⌫ | MO(2)| RSFT_T( &uarr;)       |||||
@@ -86,7 +86,7 @@ For convenience, QMK includes some Mod-Tap shortcuts to make common combinations
 
 |||||||||||||||
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|--:|
-|CTL_T(F5[^3])   |  1  |  2  |  3  |  4  |  5  |||  6  |  7  |  8  |  9  |  0  | ESCAPE |
+|SCREENSHOT[^3]  |  1  |  2  |  3  |  4  |  5  |||  6  |  7  |  8  |  9  |  0  | ESCAPE |
 |LCTL(LGUI(KC_SPC))[^4] | &larr; | &darr; |  &uarr; | &rarr; | ↵ ||| [ | ] | \ | ' | : |  ↵  |
 |ALT(&larr;) | F1[^5] | F2[^6] |   C |  V |  ⌫ ||| - | = | < | > | ? |   LALT(&rarr;)       |
 |||||      LGUI_T(PAGE_DOWN) | _ | SPACE | LALT(⌫) | TG(3) | RSFT_T(PAGE_UP)           |||||
@@ -95,7 +95,7 @@ For convenience, QMK includes some Mod-Tap shortcuts to make common combinations
 
 |||||||||||||||
 |:--|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|:--:|--:|
-|LCTL_T(F4[^7]) |  ! | @ | # | $ | % |||  ˆ | & | *      | (     | ) |     ˜    |
+|LAUNCHPAD[^7]  |  ! | @ | # | $ | % |||  ˆ | & | *      | (     | ) |     ˜    |
 |LALT_T(TAB) | Ã[^8] |   |   |   |   |||  { | } | &#124; | "[^9] | : |     ↵    |
 |LALT(&larr;) |  |   | Ç[^10] |   |   ||| _ | + | <      | >     | ? | LALT(&rarr;)|
 |||||  LGUI_T(END) | TG(3) | SPACE| DEL| _ | RSFT_T(HOME)                      |||||
@@ -138,9 +138,9 @@ Guilherme Bermêo [(github)](https://git.bermeo.dev)
 The "umlaut" diacritic, in contrast, indicates a sound shift phenomenon – also known as umlaut – in which a back vowel becomes a front vowel.
 Neither of these phenomena occur in English, except in loanwords (like naïve) or for stylistic reasons (as in the Brontë family or Mötley Crüe).
 
-[^2]: Open Mission Control.
+[^2]: Mission Control (Control+Up). Held: Control.
 
-[^3]: Bring up the screenshot toolbar.
+[^3]: Screenshot (Command+Shift+4). Held: Control.
 
 [^4]: Opens emoji dialog box.
 
@@ -148,7 +148,7 @@ Neither of these phenomena occur in English, except in loanwords (like naïve) o
 
 [^6]: Increase display brightness.
 
-[^7]: Launchpad.
+[^7]: Launchpad. Held: Control.
 
 [^8]: Macro "CEDILLA".
 

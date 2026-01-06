@@ -30,11 +30,34 @@ enum custom_keycodes {
     CEDILHA,            // ç direct key
     AO,                 // ã direct key
     ASPAS,              // " direct key
+    MISSION_CONTROL,
+    SCREENSHOT,
+    LAUNCHPAD,
+    MY_RGB_TOG,
+    MY_RGB_HUI,
+    MY_RGB_HUD,
+    MY_RGB_SAI,
+    MY_RGB_SAD,
+    MY_RGB_VAI,
+    MY_RGB_VAD,
+    MY_RGB_SPI,
+    MY_RGB_SPD
 };
+
+#ifndef TAPPING_TERM
+#define TAPPING_TERM 200
+#endif
+
+static bool mission_control_interrupted = false;
+static bool screenshot_interrupted = false;
+static bool launchpad_interrupted = false;
+static uint16_t mission_control_timer = 0;
+static uint16_t screenshot_timer = 0;
+static uint16_t launchpad_timer = 0;
 
 const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    LCTL_T(KC_F3), KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_GRAVE,
+    MISSION_CONTROL, KC_Q,   KC_W,    KC_E,    KC_R,    KC_T,                         KC_Y,    KC_U,    KC_I,    KC_O,    KC_P,  KC_GRAVE,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     LALT_T(KC_TAB), KC_A,  KC_S,    KC_D,    KC_F,    KC_G,                         KC_H,    KC_J,    KC_K,    KC_L,  KC_SCLN, KC_ENTER,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -46,7 +69,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT
 
 [_LOWER] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    LCTL_T(KC_F5), KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6, KC_7, KC_8, KC_9, KC_0, KC_ESCAPE,
+    SCREENSHOT, KC_1,   KC_2,    KC_3,    KC_4,    KC_5,                         KC_6, KC_7, KC_8, KC_9, KC_0, KC_ESCAPE,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     LCTL(LGUI(KC_SPC)), KC_LEFT, KC_DOWN, KC_UP, KC_RIGHT, KC_ENT,                  KC_LBRC, KC_RBRC, KC_BSLS, KC_QUOT, KC_COLON, KC_ENT,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -58,7 +81,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT
 
 [_RAISE] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-    LCTL_T(KC_F4), KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TILDE,
+    LAUNCHPAD, KC_EXLM, KC_AT, KC_HASH, KC_DLR, KC_PERC,                      KC_CIRC, KC_AMPR, KC_ASTR, KC_LPRN, KC_RPRN, KC_TILDE,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
     LALT_T(KC_TAB), AO,  XXXXXXX, XXXXXXX, XXXXXXX, XXXXXXX,                      KC_LCBR, KC_RCBR, KC_PIPE,  ASPAS,  KC_COLON, KC_ENT,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
@@ -70,11 +93,11 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {[_QWERTY] = LAYOUT
 
 [_NUMP] = LAYOUT_split_3x6_3(
     //,-----------------------------------------------------.                    ,-----------------------------------------------------.
-       RGB_TOG,  _______, _______, _______, _______, _______,                      _______,  KC_P7,   KC_P8,  KC_P9,  KC_PAST, KC_PSLS,
+       MY_RGB_TOG,  _______, _______, _______, _______, _______,                      _______,  KC_P7,   KC_P8,  KC_P9,  KC_PAST, KC_PSLS,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-        _______, RGB_HUI, RGB_SAI, RGB_VAI, RGB_SPI, _______,                      _______,  KC_P4,   KC_P5,  KC_P6,  KC_PMNS,  KC_ENT,
+        _______, MY_RGB_HUI, MY_RGB_SAI, MY_RGB_VAI, MY_RGB_SPI, _______,                      _______,  KC_P4,   KC_P5,  KC_P6,  KC_PMNS,  KC_ENT,
     //|--------+--------+--------+--------+--------+--------|                    |--------+--------+--------+--------+--------+--------|
-       _______, RGB_HUD, RGB_SAD, RGB_VAD, RGB_SPD, _______,                       KC_PDOT,  KC_P1,   KC_P2,  KC_P3,  KC_PPLS,   KC_NO,
+       _______, MY_RGB_HUD, MY_RGB_SAD, MY_RGB_VAD, MY_RGB_SPD, _______,                       KC_PDOT,  KC_P1,   KC_P2,  KC_P3,  KC_PPLS,   KC_NO,
     //|--------+--------+--------+--------+--------+--------+--------|  |--------+--------+--------+--------+--------+--------+--------|
                                              TG(3),    TG(3),   TG(3),     KC_BSPC,  TG(3),   KC_P0
     //                                    `--------------------------'  `--------------------------'
@@ -545,7 +568,60 @@ bool oled_task_user(void) {
 #endif
 
 bool process_record_user(uint16_t keycode, keyrecord_t* record) {
+    if (record->event.pressed) {
+        if (keycode != MISSION_CONTROL) mission_control_interrupted = true;
+        if (keycode != SCREENSHOT) screenshot_interrupted = true;
+        if (keycode != LAUNCHPAD) launchpad_interrupted = true;
+    }
     switch (keycode) {
+        case MISSION_CONTROL:
+            if (record->event.pressed) {
+                mission_control_interrupted = false;
+                mission_control_timer = timer_read();
+                register_code(KC_LCTL);
+            } else {
+                unregister_code(KC_LCTL);
+                if (!mission_control_interrupted && timer_elapsed(mission_control_timer) < TAPPING_TERM) {
+                    tap_code16(LCTL(KC_UP));
+                }
+            }
+            return false;
+
+        case SCREENSHOT:
+            if (record->event.pressed) {
+                screenshot_interrupted = false;
+                screenshot_timer = timer_read();
+                register_code(KC_LCTL);
+            } else {
+                unregister_code(KC_LCTL);
+                if (!screenshot_interrupted && timer_elapsed(screenshot_timer) < TAPPING_TERM) {
+                    tap_code16(LGUI(LSFT(KC_4)));
+                }
+            }
+            return false;
+
+        case LAUNCHPAD:
+            if (record->event.pressed) {
+                launchpad_interrupted = false;
+                launchpad_timer = timer_read();
+                register_code(KC_LCTL);
+            } else {
+                unregister_code(KC_LCTL);
+                if (!launchpad_interrupted && timer_elapsed(launchpad_timer) < TAPPING_TERM) {
+                    tap_code(KC_F4);
+                }
+            }
+            return false;
+
+        case MY_RGB_TOG: if (record->event.pressed) rgb_matrix_toggle(); return false;
+        case MY_RGB_HUI: if (record->event.pressed) rgb_matrix_increase_hue(); return false;
+        case MY_RGB_HUD: if (record->event.pressed) rgb_matrix_decrease_hue(); return false;
+        case MY_RGB_SAI: if (record->event.pressed) rgb_matrix_increase_sat(); return false;
+        case MY_RGB_SAD: if (record->event.pressed) rgb_matrix_decrease_sat(); return false;
+        case MY_RGB_VAI: if (record->event.pressed) rgb_matrix_increase_val(); return false;
+        case MY_RGB_VAD: if (record->event.pressed) rgb_matrix_decrease_val(); return false;
+        case MY_RGB_SPI: if (record->event.pressed) rgb_matrix_increase_speed(); return false;
+        case MY_RGB_SPD: if (record->event.pressed) rgb_matrix_decrease_speed(); return false;
         // ç key
         case CEDILHA:
             if (record->event.pressed) {
